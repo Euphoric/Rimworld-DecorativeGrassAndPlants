@@ -1,0 +1,18 @@
+[b]Buildable soil and grass tiles used for decoration.[/b]
+
+[h2]About[/h2]
+
+TODO
+
+Decorative tiles:
+Soil - Base game soil
+Grass - From Greenworld (with adjustments)
+Lawn - From Greenworld grass (with adjustments)
+
+[h2]FAQ[/h2]
+
+TODO
+
+[h2]Contribution[/h2]
+
+Issues, bugreports and feature requests go on [url=TODO]GitHub page[/url].
