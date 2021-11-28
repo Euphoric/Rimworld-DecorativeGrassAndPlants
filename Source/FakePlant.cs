@@ -15,44 +15,10 @@ namespace Euphoric.DecorativeGrassAndPlants
     }
 
     [StaticConstructorOnStartup]
-    public class FakePlant : ThingWithComps
+    public class FakePlant : Building
     {
-        private string cachedLabelMouseover;
         private static Color32[] workingColors = new Color32[4];
-
-        [TweakValue("Graphics", -1f, 1f)] private static float LeafSpawnRadius = 0.4f;
-        [TweakValue("Graphics", 0.0f, 2f)] private static float LeafSpawnYMin = 0.3f;
-        [TweakValue("Graphics", 0.0f, 2f)] private static float LeafSpawnYMax = 1f;
-
-        public override string LabelMouseover
-        {
-            get
-            {
-                if (cachedLabelMouseover == null)
-                {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.Append((string)def.LabelCap);
-                    cachedLabelMouseover = stringBuilder.ToString();
-                }
-
-                return cachedLabelMouseover;
-            }
-        }
-
-        public override void SpawnSetup(Map map, bool respawningAfterLoad)
-        {
-            base.SpawnSetup(map, respawningAfterLoad);
-            if (Current.ProgramState != ProgramState.Playing || respawningAfterLoad)
-                return;
-        }
-
-        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
-        {
-            Blight firstBlight = Position.GetFirstBlight(Map);
-            base.DeSpawn(mode);
-            firstBlight?.Notify_PlantDeSpawned();
-        }
-
+        
         public override void Tick()
         {
             base.Tick();
@@ -66,28 +32,8 @@ namespace Euphoric.DecorativeGrassAndPlants
             if (Destroyed)
                 return;
             base.TickLong();
-
-            cachedLabelMouseover = (string)null;
-            DoDropLeaves();
         }
-
-
-        private void DoDropLeaves()
-        {
-            if (!true ||
-                !(MoteMaker.MakeStaticMote(Vector3.zero, Map, ThingDefOf.Mote_Leaf) is MoteLeaf moteLeaf))
-                return;
-
-            float num1 = def.graphicData.drawSize.x;
-            Vector3 vector3 = Rand.InsideUnitCircleVec3 * LeafSpawnRadius;
-            Vector3 position = Position.ToVector3Shifted() +
-                               Vector3.up * Rand.Range(LeafSpawnYMin, LeafSpawnYMax) + vector3 +
-                               Vector3.forward * def.graphicData.shadowData.offset.z;
-            double num2 = (double)Rand.Value * (double)2000.TicksToSeconds();
-            int num3 = (double)vector3.z > 0.0 ? 1 : 0;
-            double num4 = (double)num1;
-            moteLeaf.Initialize(position, (float)num2, num3 != 0, (float)num4);
-        }
+        
 
         public override void Print(SectionLayer layer)
         {

@@ -11,6 +11,9 @@
             <Chemfuel>5</Chemfuel>
             <Cloth>5</Cloth>
         </costList>
+        <statBases>
+            <WorkToBuild>450</WorkToBuild>
+        </statBases>
     </ThingDef>
     
 </Defs>
