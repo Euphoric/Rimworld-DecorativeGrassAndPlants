@@ -4,6 +4,10 @@
     <DesignatorDropdownGroupDef>
         <defName>Dropdown_Decorative_Soil</defName>
     </DesignatorDropdownGroupDef>
+
+    <DesignatorDropdownGroupDef>
+        <defName>Dropdown_Decorative_Grass</defName>
+    </DesignatorDropdownGroupDef>
     
     <TerrainDef ParentName="NaturalTerrainBase">
         <defName>Decorative_Soil_Soft</defName>
@@ -21,7 +25,6 @@
         <costList>
             <WoodLog>5</WoodLog>
         </costList>
-        <scatterType>Rocky</scatterType>
         <affordances>
             <li>Light</li>
             <li>Medium</li>
@@ -53,7 +56,6 @@
         <costList>
             <WoodLog>5</WoodLog>
         </costList>
-        <scatterType>Rocky</scatterType>
         <affordances>
             <li>Light</li>
             <li>Medium</li>
@@ -86,7 +88,6 @@
             <WoodLog>5</WoodLog>
             <Chemfuel>3</Chemfuel>
         </costList>
-        <scatterType>Rocky</scatterType>
         <affordances>
             <li>Light</li>
             <li>Medium</li>
@@ -98,7 +99,7 @@
         </tags>
         <layerable>true</layerable>
         <designationCategory>Decorations</designationCategory>
-        <designatorDropdown>Dropdown_Decorative_Soil</designatorDropdown>
+        <designatorDropdown>Dropdown_Decorative_Grass</designatorDropdown>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
     </TerrainDef>
 
@@ -119,7 +120,6 @@
             <WoodLog>5</WoodLog>
             <Chemfuel>3</Chemfuel>
         </costList>
-        <scatterType>Rocky</scatterType>
         <affordances>
             <li>Light</li>
             <li>Medium</li>
@@ -131,7 +131,7 @@
         </tags>
         <layerable>true</layerable>
         <designationCategory>Decorations</designationCategory>
-        <designatorDropdown>Dropdown_Decorative_Soil</designatorDropdown>
+        <designatorDropdown>Dropdown_Decorative_Grass</designatorDropdown>
         <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
     </TerrainDef>
 </Defs>
