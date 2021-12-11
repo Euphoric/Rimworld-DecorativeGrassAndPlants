@@ -115,14 +115,14 @@ namespace Euphoric.DecorativeGrassAndPlants
 
         protected override bool ApplyWorker(XmlDocument xml)
         {
-            Log.Warning("Applying fake plants patch");
+            //Log.Warning("Applying fake plants patch");
 
             var plantBase = xml.SelectNodes("/Defs/ThingDef[@Name='PlantBaseNonEdible']")[0];
             var fakePlantDef = new FakePlantDef() { graphicDataNode = xml.CreateElement("graphicData") };
             var fakePlantDefs = ProcessPlantXmlNode(xml, plantBase, fakePlantDef).ToList();
 
-            var logMessage = "Plant names:" + Environment.NewLine + PlantDefsDebug(fakePlantDefs);
-            Log.Warning(logMessage);
+            // var logMessage = "Plant names:" + Environment.NewLine + PlantDefsDebug(fakePlantDefs);
+            // Log.Warning(logMessage);
 
             var defsNode = xml.SelectSingleNode("Defs");
 

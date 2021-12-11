@@ -13,6 +13,7 @@
         </costList>
         <statBases>
             <WorkToBuild>450</WorkToBuild>
+            <Flammability>3</Flammability>
         </statBases>
     </ThingDef>
     
