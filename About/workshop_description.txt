@@ -1,18 +1,21 @@
-[b]Buildable soil and grass tiles used for decoration.[/b]
+[b]Buildable soil, grass tiles. Buildable plants and trees. Used for decoration.[/b]
 
 [h2]About[/h2]
 
-TODO
-
 Decorative tiles:
 Soil - Base game soil
-Grass - From Greenworld (with adjustments)
-Lawn - From Greenworld grass (with adjustments)
+Grass - From Greenworld Grass(with adjustments)
 
-[h2]FAQ[/h2]
+Decorative trees and plants:
+This mod is special in that it generates fake plants from the plants in the game.
+Their types, sizes and graphics is taken from proper plants. So it should create fake plants from mods or ones that change graphics.
+As long as this mod is placed after all mods that change plants.
 
-TODO
+[h2]Compatibility[/h2]
+
+This mod should be compatible with any mod that adds or changes plants or trees. As long as the mod doesn't do anything weird.
+Just make sure this mod is placed after all other mods that change plants.
 
 [h2]Contribution[/h2]
 
-Issues, bugreports and feature requests go on [url=TODO]GitHub page[/url].
+Issues, bug reports and feature requests go on [url=https://github.com/Euphoric/Rimworld-DecorativeGrassAndPlants]GitHub page[/url].
