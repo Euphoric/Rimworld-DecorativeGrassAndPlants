@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using UnityEngine;
 using Verse;
 // ReSharper disable InconsistentNaming
 
@@ -156,11 +157,17 @@ namespace Euphoric.DecorativeGrassAndPlants
 
         private static XmlNode CreateFakePlantDefNode(XmlDocument xml, FakePlantDef plantDef, FakePlantVariant variant)
         {
+            var costScale = Mathf.Pow(0.2f+variant.VisualSize, 2.2f)*Mathf.Pow(variant.MaxMeshCount, 0.75f)*0.5f;
             var fakePlantXml =
                 $"<ThingDef ParentName=\"FakePlantBase\">" +
                 $"<defName>{variant.DefName}</defName>" +
                 $"<label>{variant.Label}</label>" +
                 plantDef.graphicDataNode.OuterXml +
+                "<costList>" +
+                $"    <WoodLog>{Mathf.CeilToInt(10*costScale)}</WoodLog>" +
+                $"    <Cloth>{Mathf.CeilToInt(5*costScale)}</Cloth>"+
+                $"    <Chemfuel>{Mathf.CeilToInt(3*costScale)}</Chemfuel>"+
+                "</costList>"+
                 $"<modExtensions><li Class=\"Euphoric.DecorativeGrassAndPlants.FakePlantExtension\">" +
                 $"<visualSize>{variant.VisualSize}</visualSize>" +
                 $"<maxMeshCount>{variant.MaxMeshCount}</maxMeshCount>" +
@@ -190,7 +197,7 @@ namespace Euphoric.DecorativeGrassAndPlants
 
                     foreach (var variant in plantDef.CreateVariants())
                     {
-                        sb.AppendLine($"    {variant.DefName} {variant.MaxMeshCount}");
+                        sb.AppendLine($"    {variant.DefName} {variant.MaxMeshCount} {variant.VisualSize}");
                     }
                 }
             }
