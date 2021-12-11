@@ -163,11 +163,14 @@ namespace Euphoric.DecorativeGrassAndPlants
                 $"<defName>{variant.DefName}</defName>" +
                 $"<label>{variant.Label}</label>" +
                 plantDef.graphicDataNode.OuterXml +
-                "<costList>" +
+                $"<costList>" +
                 $"    <WoodLog>{Mathf.CeilToInt(10*costScale)}</WoodLog>" +
                 $"    <Cloth>{Mathf.CeilToInt(5*costScale)}</Cloth>"+
                 $"    <Chemfuel>{Mathf.CeilToInt(3*costScale)}</Chemfuel>"+
-                "</costList>"+
+                $"</costList>"+
+                $"<statBases>"+
+                $"    <WorkToBuild>{450*costScale}</WorkToBuild>"+
+                $"</statBases>"+
                 $"<modExtensions><li Class=\"Euphoric.DecorativeGrassAndPlants.FakePlantExtension\">" +
                 $"<visualSize>{variant.VisualSize}</visualSize>" +
                 $"<maxMeshCount>{variant.MaxMeshCount}</maxMeshCount>" +
