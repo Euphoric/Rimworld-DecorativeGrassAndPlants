@@ -45,6 +45,7 @@ namespace Euphoric.DecorativeGrassAndPlants
             public XmlElement graphicDataNode;
             public PlantKind kind = PlantKind.Plant;
             public float topWindExposure = 0.25f;
+            public string altitudeLayer;
 
             public FakePlantDef Copy()
             {
@@ -56,7 +57,8 @@ namespace Euphoric.DecorativeGrassAndPlants
                     maxMeshCount = maxMeshCount,
                     kind = kind,
                     topWindExposure = topWindExposure,
-                    graphicDataNode = graphicDataNode.CloneNode(true) as XmlElement
+                    graphicDataNode = graphicDataNode.CloneNode(true) as XmlElement,
+                    altitudeLayer = altitudeLayer
                 };
             }
 
@@ -121,8 +123,8 @@ namespace Euphoric.DecorativeGrassAndPlants
             var fakePlantDef = new FakePlantDef() { graphicDataNode = xml.CreateElement("graphicData") };
             var fakePlantDefs = ProcessPlantXmlNode(xml, plantBase, fakePlantDef).ToList();
 
-            // var logMessage = "Plant names:" + Environment.NewLine + PlantDefsDebug(fakePlantDefs);
-            // Log.Warning(logMessage);
+            var logMessage = "Plant names:" + Environment.NewLine + PlantDefsDebug(fakePlantDefs);
+            Log.Warning(logMessage);
 
             var defsNode = xml.SelectSingleNode("Defs");
 
@@ -168,6 +170,7 @@ namespace Euphoric.DecorativeGrassAndPlants
                 $"    <Cloth>{Mathf.CeilToInt(5*costScale)}</Cloth>"+
                 $"    <Chemfuel>{Mathf.CeilToInt(3*costScale)}</Chemfuel>"+
                 $"</costList>"+
+                $"<altitudeLayer>{plantDef.altitudeLayer}</altitudeLayer>" +
                 $"<statBases>"+
                 $"    <WorkToBuild>{450*costScale}</WorkToBuild>"+
                 $"</statBases>"+
@@ -196,7 +199,7 @@ namespace Euphoric.DecorativeGrassAndPlants
                 foreach (var plantDef in plantGroup)
                 {
                     sb.AppendLine(
-                        $"  {plantDef.defName} {plantDef.label} {plantDef.kind} {plantDef.plantVisualSizeRange} {plantDef.plantVisualSizeRange.Span} {plantDef.maxMeshCount}");
+                        $"  {plantDef.defName};{plantDef.label};{plantDef.kind};{plantDef.plantVisualSizeRange};{plantDef.plantVisualSizeRange.Span};{plantDef.maxMeshCount};{plantDef.altitudeLayer};");
 
                     foreach (var variant in plantDef.CreateVariants())
                     {
@@ -234,6 +237,12 @@ namespace Euphoric.DecorativeGrassAndPlants
                     {
                         thisDef.topWindExposure = float.Parse(topWindExposureNode.InnerText);
                     }
+                }
+
+                var altitudeLayerNode = node.SelectSingleNode("altitudeLayer");
+                if (altitudeLayerNode != null)
+                {
+                    thisDef.altitudeLayer = altitudeLayerNode.InnerText;
                 }
 
                 if (node.SelectSingleNode("graphicData") is XmlElement graphicDataNode)
