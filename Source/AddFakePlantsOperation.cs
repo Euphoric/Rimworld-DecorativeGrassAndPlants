@@ -25,13 +25,15 @@ namespace Euphoric.DecorativeGrassAndPlants
             public string DefName { get; }
             public string Label { get; }
             public float VisualSize { get; }
+            public VariantSize Size { get; }
             public int MaxMeshCount { get; }
 
-            public FakePlantVariant(string defName, string label, float visualSize, int maxMeshCount)
+            public FakePlantVariant(string defName, string label, float visualSize, VariantSize size, int maxMeshCount)
             {
                 DefName = defName;
                 Label = label;
                 VisualSize = visualSize;
+                Size = size;
                 MaxMeshCount = maxMeshCount;
             }
         }
@@ -72,7 +74,7 @@ namespace Euphoric.DecorativeGrassAndPlants
                         var variantDefName = defName + "_Fake_" + sizeVariant.Item2 + "_" + meshCountLabel.Item2;
                         var variantLabel = "fake " + label +" " + sizeVariant.Item3 + " " + meshCountLabel.Item3;
 
-                        yield return new FakePlantVariant(variantDefName, variantLabel, sizeVariant.Item1, meshCountLabel.Item1);
+                        yield return new FakePlantVariant(variantDefName, variantLabel, sizeVariant.Item1, sizeVariant.Item2, meshCountLabel.Item1);
                     }
                 }
             }
@@ -104,17 +106,24 @@ namespace Euphoric.DecorativeGrassAndPlants
                 }
             }
 
-            private IEnumerable<(float, string, string)> CreateSizeVariants()
+            private IEnumerable<(float, VariantSize, string)> CreateSizeVariants()
             {
-                yield return (plantVisualSizeRange.TrueMin, "Small", "small");
+                yield return (plantVisualSizeRange.TrueMin, VariantSize.Small, "small");
                 if (plantVisualSizeRange.Span > 0.5)
                 {
-                    yield return (plantVisualSizeRange.Average, "Medium", "medium");
+                    yield return (plantVisualSizeRange.Average, VariantSize.Medium, "medium");
                 }
-                yield return (plantVisualSizeRange.TrueMax, "Large", "large");
+                yield return (plantVisualSizeRange.TrueMax, VariantSize.Large, "large");
             }
         }
 
+        public enum VariantSize
+        {
+            Small,
+            Medium,
+            Large
+        }
+        
         protected override bool ApplyWorker(XmlDocument xml)
         {
             //Log.Warning("Applying fake plants patch");
@@ -123,8 +132,8 @@ namespace Euphoric.DecorativeGrassAndPlants
             var fakePlantDef = new FakePlantDef() { graphicDataNode = xml.CreateElement("graphicData") };
             var fakePlantDefs = ProcessPlantXmlNode(xml, plantBase, fakePlantDef).ToList();
 
-            var logMessage = "Plant names:" + Environment.NewLine + PlantDefsDebug(fakePlantDefs);
-            Log.Warning(logMessage);
+            //var logMessage = "Plant names:" + Environment.NewLine + PlantDefsDebug(fakePlantDefs);
+            //Log.Warning(logMessage);
 
             var defsNode = xml.SelectSingleNode("Defs");
 
@@ -159,7 +168,8 @@ namespace Euphoric.DecorativeGrassAndPlants
 
         private static XmlNode CreateFakePlantDefNode(XmlDocument xml, FakePlantDef plantDef, FakePlantVariant variant)
         {
-            var costScale = Mathf.Pow(0.2f+variant.VisualSize, 2.2f)*Mathf.Pow(variant.MaxMeshCount, 0.75f)*0.5f;
+            var costScale = CalculateVariantCost(plantDef, variant);
+
             var fakePlantXml =
                 $"<ThingDef ParentName=\"FakePlantBase\">" +
                 $"<defName>{variant.DefName}</defName>" +
@@ -187,6 +197,46 @@ namespace Euphoric.DecorativeGrassAndPlants
             var fakePlantDefNode = xml.ImportNode(doc.FirstChild, true);
             //Log.Message(fakePlantDefNode.OuterXml);
             return fakePlantDefNode;
+        }
+
+        private static float CalculateVariantCost(FakePlantDef plantDef, FakePlantVariant variant)
+        {
+            float costScale = 0.1f;
+            costScale *= Mathf.Sqrt(variant.MaxMeshCount);
+            switch (plantDef.kind)
+            {
+                case PlantKind.Plant:
+                    costScale *= 1;
+                    break;
+                case PlantKind.Tree:
+                    costScale *= 5;
+                    break;
+                case PlantKind.Bush:
+                    costScale *= 2f;
+                    break;
+                case PlantKind.CavePlant:
+                    costScale *= 2f;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            switch (variant.Size)
+            {
+                case VariantSize.Small:
+                    costScale *= 1;
+                    break;
+                case VariantSize.Medium:
+                    costScale *= 2.5f;
+                    break;
+                case VariantSize.Large:
+                    costScale *= 5;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return costScale;
         }
 
         private static string PlantDefsDebug(List<FakePlantDef> fakePlantDefs)
